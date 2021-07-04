@@ -1,23 +1,71 @@
-//Источник функций: https://learn.javascript.ru/task/random-int-min-max
-// Результат функции: целое число из диапазона "от...до"
-const getRandomInteger = function (min, max) {
-  if (max <= min || (min < 0 || max < 0)) {
-    return undefined;
-  }
+const OFFER_TYPES = [
+  'palace',
+  'flat',
+  'house',
+  'bungalow',
+  'hotel',
+];
 
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+const CHECKINS = [
+  '12:00',
+  '13:00',
+  '14:00',
+];
+
+const FEATURES = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner',
+];
+
+const PHOTOS = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+];
+
+const getRandomFloat = (min, max, precision) => {
+  if (max <= min || max < 0 || min < 0) {
+    return null;
+  }
+  const result = (Math.random() * (max - min + 0.1)) + min;
+  return Number(result.toFixed(precision));
 };
 
-getRandomInteger(1, 10);
+const getRandomInteger = (min, max) => getRandomFloat(min, max, 0);
 
-// Результат функции: число с плавающей точкой из диапазона "от...до" с указанным "количеством знаков после запятой"
-const getRandomFloatNumber = function (min, max, floatNum) {
-  if (max <= min || (min < 0 || max < 0)) {
-    return undefined;
-  }
+const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
-  return (Math.random() * (max - min) + min).toFixed(floatNum);
+const getRandomArray = (array) => {
+  const newArray = array.slice().sort(() => Math.random() - 0.5);
+  return newArray.slice(0, getRandomInteger(0, newArray.length - 1));
 };
 
-getRandomFloatNumber(2, 6, 4);
+const createAdvert = () => ({
+  author: {
+    avatar: `img/avatars/user0${getRandomInteger(1, 9)}.png`,
+  },
+  offer: {
+    title: 'Апартаменты в Токио',
+    address: `${location.x}, ${location.y}`,
+    price: getRandomInteger(1, 5000),
+    type: getRandomArrayElement(OFFER_TYPES),
+    rooms: getRandomInteger(0, 5),
+    guests: getRandomInteger(0, 5),
+    checkin: getRandomArrayElement(CHECKINS),
+    checkout: getRandomArrayElement(CHECKINS),
+    features: getRandomArray(FEATURES),
+    description: 'Апартаменты в Токио. Все включено.',
+    photos: getRandomArray(PHOTOS),
+  },
+  location: {
+    lat: getRandomFloat(35.65000, 35.70000, 5),
+    lng: getRandomFloat(139.70000, 139.80000, 5),
+  },
+});
+
+createAdvert();
 
